@@ -1,0 +1,18 @@
+/* TaskNotes Project Colors
+ *
+ * Colors task cards by project using --project-hue set by the plugin.
+ * Uses HSL with fixed saturation/lightness so every project gets a
+ * visually consistent, distinct color automatically.
+ */
+
+/* ── Light mode ── */
+.tasknotes-plugin .task-card[style*="--project-hue"] {
+	background-color: hsl(var(--project-hue), 55%, 92%);
+	border-left: 3px solid hsl(var(--project-hue), 50%, 55%);
+}
+
+/* ── Dark mode ── */
+.theme-dark .tasknotes-plugin .task-card[style*="--project-hue"] {
+	background-color: hsl(var(--project-hue), 30%, 18%);
+	border-left: 3px solid hsl(var(--project-hue), 40%, 40%);
+}

@@ -1,0 +1,9 @@
+{
+	"id": "tasknotes-project-colors",
+	"name": "TaskNotes Project Colors",
+	"version": "0.1.0",
+	"minAppVersion": "1.0.0",
+	"description": "Automatically colors TaskNotes task cards by project using a deterministic hash-based color scheme.",
+	"author": "minorchange",
+	"isDesktopOnly": false
+}
