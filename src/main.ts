@@ -1,38 +1,62 @@
 import { Plugin } from "obsidian";
 
 export default class TaskNotesProjectColorsPlugin extends Plugin {
-	private observer: MutationObserver | null = null;
+	private observers: Map<Document, MutationObserver> = new Map();
 
 	async onload() {
-		this.observer = new MutationObserver((mutations) => {
+		// Observe the main window
+		this.observeWindow(document);
+
+		// Observe any future popout windows
+		this.registerEvent(
+			this.app.workspace.on("window-open", (workspaceWindow) => {
+				this.observeWindow(workspaceWindow.doc);
+			})
+		);
+
+		this.registerEvent(
+			this.app.workspace.on("window-close", (workspaceWindow) => {
+				const observer = this.observers.get(workspaceWindow.doc);
+				if (observer) {
+					observer.disconnect();
+					this.observers.delete(workspaceWindow.doc);
+				}
+			})
+		);
+	}
+
+	onunload() {
+		for (const [doc, observer] of this.observers) {
+			observer.disconnect();
+			doc.querySelectorAll<HTMLElement>(
+				".tasknotes-plugin .task-card"
+			).forEach((card) => {
+				card.style.removeProperty("--project-hue");
+			});
+		}
+		this.observers.clear();
+	}
+
+	private observeWindow(doc: Document) {
+		const observer = new MutationObserver((mutations) => {
 			for (const mutation of mutations) {
 				for (const node of mutation.addedNodes) {
-					if (node instanceof HTMLElement) {
-						this.colorCards(node);
+					if (node.nodeType === Node.ELEMENT_NODE) {
+						this.colorCards(node as HTMLElement);
 					}
 				}
 			}
 		});
 
-		this.observer.observe(document.body, {
+		observer.observe(doc.body, {
 			childList: true,
 			subtree: true,
 		});
 
+		this.observers.set(doc, observer);
+
 		// Initial pass for cards already in the DOM
-		this.colorCards(document.body);
-	}
-
-	onunload() {
-		this.observer?.disconnect();
-		this.observer = null;
-
-		// Clean up injected styles
-		document.querySelectorAll<HTMLElement>(
-			".tasknotes-plugin .task-card"
-		).forEach((card) => {
-			card.style.removeProperty("--project-hue");
-		});
+		this.colorCards(doc.body);
 	}
 
 	private colorCards(root: HTMLElement) {

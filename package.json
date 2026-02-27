@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-tasknotes-project-colors",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Automatically colors TaskNotes task cards by project using a deterministic hash-based color scheme.",
 	"main": "main.js",
 	"scripts": {
