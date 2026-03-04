@@ -3,7 +3,7 @@ import { Plugin } from "obsidian";
 export default class TaskNotesProjectColorsPlugin extends Plugin {
 	private observers: Map<Document, MutationObserver> = new Map();
 
-	async onload() {
+	onload() {
 		// Observe the main window
 		this.observeWindow(document);
 

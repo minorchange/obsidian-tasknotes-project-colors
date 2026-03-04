@@ -30,17 +30,19 @@ npm run build
 #    - package.json   →  "version": "1.1.0"
 #    - versions.json  →  add "1.1.0": "1.0.0"
 
-# 4. Rebuild (so main.js reflects any changes)
+# 4. Update CHANGELOG.md with a summary of changes
+
+# 5. Rebuild (so main.js reflects any changes)
 npm run build
 
-# 5. Commit everything
-git add manifest.json package.json versions.json main.js styles.css src/
+# 6. Commit everything
+git add manifest.json package.json versions.json main.js styles.css src/ CHANGELOG.md
 git commit -m "Release 1.1.0"
 
-# 6. Tag (must match the version exactly, no "v" prefix)
+# 7. Tag (must match the version exactly, no "v" prefix)
 git tag 1.1.0
 
-# 7. Push
+# 8. Push
 git push && git push --tags
 ```
 
